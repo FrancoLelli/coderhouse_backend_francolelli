@@ -1,7 +1,8 @@
 import prodsModel from "../models/products_models.js";
 
 export default class ProductManagerD {
-    async create(product) {
+    async addProducts(product) {
+        console.log(product);
         return await prodsModel.create(product);
     }
 
@@ -9,7 +10,7 @@ export default class ProductManagerD {
         return await prodsModel.findById(id);
     }
 
-    async getAll() {
+    async getProducts() {
         return await prodsModel.find({});
     }
 

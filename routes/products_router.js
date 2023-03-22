@@ -12,6 +12,7 @@ productsRouter.get("/", async (req, res) => {
     const { limit } = req.query;
 
     const producto = new ProductManager("./products.json");
+    console.log(producto);
     let prods = await producto.getProducts();
     console.log(prods);
 
@@ -56,9 +57,7 @@ productsRouter.post("/", uploader.single('thumbnails') ,async (req, res) => {
       category
     } = req.body;
 
-    let thumbnail = req.file
-
-    let thumbnails = thumbnail.path
+    let thumbnails = req.file.path
 
     const newProd = {
       title,
@@ -71,7 +70,7 @@ productsRouter.post("/", uploader.single('thumbnails') ,async (req, res) => {
       category
     };
 
-    console.log(newProd);
+    console.log("Prueba: "+newProd+" Fin Prueba");
 
     const producto = new ProductManager("./products.json");
 
