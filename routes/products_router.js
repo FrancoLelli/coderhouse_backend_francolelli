@@ -1,6 +1,6 @@
 import { Router, json } from "express";
-import ProductManager from "../primer-entrega_francolelli.js";
 import { uploader } from '../file_uploads.js'
+import { ProductManager } from "../src/dao/index.js";
 
 
 

@@ -5,6 +5,7 @@ import { engine } from "express-handlebars";
 import __dirname from "./utils.js";
 import { Server } from "socket.io";
 import viewsRouter from "../routes/views_router.js"
+import mongoose from "mongoose";
 
 import prods from "../products.json" assert { type: "json" };
 
@@ -20,6 +21,12 @@ app.use("/api/products", productsRouter)
 app.use("/api/carts", cartsRouter)
 app.use("/api/prueba", viewsRouter)
 app.use(express.json())
+
+mongoose
+.connect("mongodb+srv://francolelli:kongalelli@cluster0.hyaqfeo.mongodb.net/test?retryWrites=true&w=majority")
+.then((conn) => {
+  console.log("Connected to DB!");
+})
 
 
 const httpServer = app.listen(8080, () => {

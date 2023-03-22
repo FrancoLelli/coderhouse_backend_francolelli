@@ -1,5 +1,6 @@
 import { Router } from "express";
-import ProductManager from "../primer-entrega_francolelli.js";
+import { ProductManager } from "../src/dao/index.js";
+
 
 const router = Router();
 

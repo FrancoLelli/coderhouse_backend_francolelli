@@ -4,7 +4,7 @@
 import { log } from 'console';
 import fs from 'fs'
 
-export default class ProductManager {
+export default class ProductManagerF {
   /* #path = "./products.json"; */
   #path;
   
@@ -93,7 +93,7 @@ export default class ProductManager {
 }
 
 async function main() {
-  const newData = new ProductManager('./prueba.json');
+  const newData = new ProductManagerF('./prueba.json');
 
   await newData.addProducts(
     "producto prueba",

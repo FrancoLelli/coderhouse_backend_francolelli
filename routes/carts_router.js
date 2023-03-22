@@ -1,12 +1,12 @@
 import { Router, json } from "express";
-import CarritoManager from "../carritoManager.js";
+import { CartManager } from "../src/dao/index.js";
 
 const cartsRouter = Router();
 cartsRouter.use(json());
 
 cartsRouter.post("/",async (req, res) => {
   try {
-    const newCarrito = await new CarritoManager("./carrito.json");
+    const newCarrito = await new CartManager("./carrito.json");
     let prod = await newCarrito.addCarrito();
 
     res.send(prod);
@@ -21,7 +21,7 @@ cartsRouter.get("/:cid", async (req, res) => {
 
     const id = parseInt(cid);
 
-    const newCarrito = await new CarritoManager("./carrito.json");
+    const newCarrito = await new CartManager("./carrito.json");
 
     let prods = await newCarrito.getCarritoById(id);
 
@@ -36,7 +36,7 @@ cartsRouter.post("/:cid/product/:pid", async (req, res) => {
   try {
     const { cid, pid } = req.params;
 
-    const newCarrito = await new CarritoManager("./carrito.json");
+    const newCarrito = await new CartManager("./carrito.json");
 
     let carga = await newCarrito.addCarritoProd(cid, pid);
 

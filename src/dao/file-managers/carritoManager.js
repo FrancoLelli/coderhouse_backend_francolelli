@@ -1,7 +1,7 @@
 import { log } from "console";
 import fs from "fs";
 
-export default class CarritoManager {
+export default class CartManagerF {
   #path;
 
   constructor(path) {
