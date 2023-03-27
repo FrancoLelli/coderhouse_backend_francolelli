@@ -54,7 +54,8 @@ productsRouter.post("/", uploader.single('thumbnails') ,async (req, res) => {
       price,
       status,
       stock,
-      category
+      category, 
+      quantity
     } = req.body;
 
     let thumbnails = req.file.path
@@ -67,7 +68,8 @@ productsRouter.post("/", uploader.single('thumbnails') ,async (req, res) => {
       status,
       stock,
       thumbnails,
-      category
+      category,
+      quantity
     };
 
     console.log("Prueba: "+newProd+" Fin Prueba");
@@ -76,7 +78,7 @@ productsRouter.post("/", uploader.single('thumbnails') ,async (req, res) => {
 
 
 
-    await producto.addProducts(
+    await producto.addProducts({
       title,
       description,
       price,
@@ -84,8 +86,9 @@ productsRouter.post("/", uploader.single('thumbnails') ,async (req, res) => {
       code,
       stock,
       category,
-      status
-    );
+      status,
+      quantity
+  });
 
     console.log(newProd);
     

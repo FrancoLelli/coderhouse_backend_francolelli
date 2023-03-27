@@ -1,15 +1,15 @@
 import cartModel from "../models/carts_models.js";
 
 export default class CartManagerD {
-    async create(product) {
+    async addCarrito(product) {
         return await cartModel.create(product);
     }
 
-    async getById(id) {
+    async getCarritoById(id) {
         return await cartModel.findById(id);
     }
 
-    async getAll() {
+    async getCarrito() {
         return await cartModel.find({});
     }
 
