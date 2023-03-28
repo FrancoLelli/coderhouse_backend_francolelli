@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
 const cartSchema = new mongoose.Schema({
-    products: [{
-        type: mongoose.Schema.ObjectId,
-        ref: "Producto"
-    }]
+    products: {
+        type: String,
+        required: true
+    }
 })
 
 const cartModel = mongoose.model("carts", cartSchema)

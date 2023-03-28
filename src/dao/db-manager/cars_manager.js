@@ -13,7 +13,7 @@ export default class CartManagerD {
         return await cartModel.find({});
     }
 
-    async update(id, product) {
+    async addCarritoProd(id, product) {
         return await cartModel.findByIdAndUpdate(id, product);
     }
 

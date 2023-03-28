@@ -23,7 +23,7 @@ app.use("/api/prueba", viewsRouter)
 app.use(express.json())
 
 mongoose
-.connect("mongodb+srv://francolelli:prueba123@cluster0.hyaqfeo.mongodb.net/coder?retryWrites=true&w=majority")
+.connect("mongodb+srv://francolelli:prueba123@cluster0.hyaqfeo.mongodb.net/ecommerce?retryWrites=true&w=majority")
 .then((conn) => {
   console.log("Connected to DB!");
 })

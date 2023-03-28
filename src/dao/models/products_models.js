@@ -5,6 +5,26 @@ const prodsSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    code: {
+        type: String,
+        required: true
+    },
+    status: {
+        type: Boolean,
+        required: true
+    },
+    stock: {
+        type: String,
+        required: true
+    },
+    category: {
+        type: String,
+        required: true
+    },
+    thumbnails: {
+        type: String,
+        required: true
+    },
     price: {
         type: Number,
         required: true

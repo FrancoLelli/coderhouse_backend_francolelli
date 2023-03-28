@@ -101,11 +101,11 @@ productsRouter.post("/", uploader.single('thumbnails') ,async (req, res) => {
 productsRouter.put("/:pid", async (req, res) => {
   try {
     const { pid } = req.params;
-    const id = parseInt(pid);
-    const { prop, dato } = req.body;
+    /* const id = parseInt(pid);
+    const { prop, dato } = req.body; */
 
     const producto = new ProductManager("./products.json");
-    let prods = await producto.updateProd(id, prop, dato);
+    let prods = await producto.updateProd(pid, req.body);
 
     console.log(prods);
 
@@ -115,7 +115,7 @@ productsRouter.put("/:pid", async (req, res) => {
   }
 });
 
-productsRouter.delete("/:pid", async (req, res) => {
+productsRouter.delete("/:pid", async (req, res, next) => {
   try {
     let { pid } = req.params;
 
@@ -124,11 +124,7 @@ productsRouter.delete("/:pid", async (req, res) => {
     let prods = await producto.deleteProducts(pid);
 
     res.send("El producto se elimino correctamente")
-    if (prods) {
-      res.send(prods);
-    } else {
-      res.send({ error: `No existe producto con id: ${pid}` });
-    }
+    next();
   } catch (error) {
     console.log(error);
   }

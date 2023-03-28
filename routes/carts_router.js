@@ -19,11 +19,9 @@ cartsRouter.get("/:cid", async (req, res) => {
   try {
     const { cid } = req.params;
 
-    const id = parseInt(cid);
-
     const newCarrito = await new CartManager("./carrito.json");
 
-    let prods = await newCarrito.getCarritoById(id);
+    let prods = await newCarrito.getCarritoById(cid);
 
     console.log(prods);
     res.send(prods);
@@ -32,17 +30,16 @@ cartsRouter.get("/:cid", async (req, res) => {
   }
 });
 
-cartsRouter.post("/:cid/product/:pid", async (req, res) => {
+cartsRouter.post("/:cid/product/:pid", async (req, res, next) => {
   try {
     const { cid, pid } = req.params;
 
     const newCarrito = await new CartManager("./carrito.json");
 
-    let carga = await newCarrito.addCarritoProd({cid, pid});
+    let carga = await newCarrito.addCarritoProd(cid, pid);
 
     res.send("Producto agregado correctamente")
-    console.log(carga);
-    res.send(carga);
+    next()
   } catch (error) {
     console.log(error);
   }

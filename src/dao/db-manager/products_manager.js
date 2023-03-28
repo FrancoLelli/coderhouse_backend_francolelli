@@ -5,7 +5,7 @@ export default class ProductManagerD {
         return await prodsModel.create(product);
     }
 
-    async getById(id) {
+    async getProductById(id) {
         return await prodsModel.findById(id);
     }
 
