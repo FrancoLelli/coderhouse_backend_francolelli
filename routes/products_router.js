@@ -1,27 +1,58 @@
 import { Router, json } from "express";
 import { uploader } from '../file_uploads.js'
 import { ProductManager } from "../src/dao/index.js";
+import prodsModel from "../src/dao/models/products_models.js";
 
 
 
 const productsRouter = Router();
 productsRouter.use(json());
 
+productsRouter.get("/products", async (req, res) => {
+  const products = await prodsModel.paginate(
+    {},
+    {
+      limit: 5,
+      lean: true
+    }
+  )
+
+  res.render("products", { products })
+})
+
 productsRouter.get("/", async (req, res) => {
   try {
-    const { limit } = req.query;
+    
+    const { limit, page, sort } = req.query;
+
+    console.log(req.query.query);
+
+    const filtroQuery = req.query.query ? { query: { $exists: true } } : {};
 
     const producto = new ProductManager("./products.json");
-    console.log(producto);
-    let prods = await producto.getProducts();
+
+    /* let prods = await producto.getProducts(); */
+    const prods = await prodsModel.paginate(
+      {...filtroQuery},
+      {
+        lean: true,
+        limit: limit ?? 10,
+        page: page ?? 1,
+        sort: { title: sort ?? asc }
+      }
+    )
+
+    res.send(prods)
     console.log(prods);
 
-    if (limit) {
+    /* if (limit) {
       res.send(prods.slice(0, limit));
     } else {
       res.send(prods);
-    }
+    } */
+
   } catch (error) {
+
     console.log(error);
   }
 });
@@ -35,7 +66,8 @@ productsRouter.get("/:pid", async (req, res) => {
     let prods = await producto.getProductById(pid);
 
     if (prods) {
-      res.send(prods);
+      /* res.send(prods); */
+      res.render("product", prods )
     } else {
       res.send({ error: `No existe producto con id: ${pid}` });
     }

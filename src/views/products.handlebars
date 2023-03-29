@@ -1,0 +1,24 @@
+<div>
+    <h1>Products</h1>
+    <ul>
+        {{#each products.docs}}
+        <li><a href="/api/products/{{this._id}}">{{this.title}}</a></li>
+        {{/each}}
+    </ul>
+    <div>
+        {{#if products.hasPrevPage}}
+            <a href="/products?page={{products.prevPage}}">Ant</a>
+        {{/if}}
+    </div>
+    <div>
+        {{#if products.hasPrevPage}}
+            <a href="/products?page={{products.prevPage}}">Ant</a>
+        {{/if}}
+    </div>
+    <span>Pagina {{products.page}} de {{products.totalPages}}</span>
+    <div>
+        {{#if products.hasNextPage}}
+            <a href="/products?page={{products.nextPage}}">Sig</a>
+        {{/if}}
+    </div>
+</div>
