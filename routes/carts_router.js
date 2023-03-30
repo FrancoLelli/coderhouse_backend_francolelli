@@ -36,7 +36,7 @@ cartsRouter.post("/:cid/product/:pid", async (req, res, next) => {
 
     const newCarrito = await new CartManager("./carrito.json");
 
-    let carga = await newCarrito.addCarritoProd(cid, pid);
+    await newCarrito.addCarritoProd(cid, pid);
 
     res.send("Producto agregado correctamente")
     next()

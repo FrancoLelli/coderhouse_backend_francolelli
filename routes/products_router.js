@@ -38,7 +38,7 @@ productsRouter.get("/", async (req, res) => {
         lean: true,
         limit: limit ?? 10,
         page: page ?? 1,
-        sort: { title: sort ?? asc }
+        sort: { title: sort ?? 'asc' }
       }
     )
 
