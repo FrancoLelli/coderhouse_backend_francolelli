@@ -6,11 +6,13 @@ import __dirname from "./utils.js";
 import { Server } from "socket.io";
 import viewsRouter from "../routes/views_router.js"
 import mongoose from "mongoose";
+import bodyParser from "body-parser";
 
 import prods from "../products.json" assert { type: "json" };
 
 const app = express();
 
+app.use(bodyParser.urlencoded({extended: true}))
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/views");
