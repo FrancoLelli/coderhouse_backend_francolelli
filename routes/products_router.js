@@ -23,17 +23,21 @@ productsRouter.get("/products", async (req, res) => {
 productsRouter.get("/", async (req, res) => {
   try {
     
-    const { limit, page, sort } = req.query;
-
-    console.log(req.query.query);
+    const { limit, page, sort, category } = req.query;
 
     const filtroQuery = req.query.query ? { query: { $exists: true } } : {};
 
-    const producto = new ProductManager("./products.json");
+    if(category) {
+      filtroQuery.category = category
+    }
 
-    /* let prods = await producto.getProducts(); */
+     const producto = new ProductManager("./products.json");
+
+    /* let prods = await producto.getProducts();  */
     const prods = await prodsModel.paginate(
-      {...filtroQuery},
+      {
+        ...filtroQuery,
+      },
       {
         lean: true,
         limit: limit ?? 10,
@@ -45,16 +49,15 @@ productsRouter.get("/", async (req, res) => {
     res.send(prods)
     console.log(prods);
 
-    /* if (limit) {
+    if (limit) {
       res.send(prods.slice(0, limit));
     } else {
       res.send(prods);
-    } */
-
+    } 
   } catch (error) {
 
     console.log(error);
-  }
+  } 
 });
 
 productsRouter.get("/:pid", async (req, res) => {
@@ -67,6 +70,7 @@ productsRouter.get("/:pid", async (req, res) => {
 
     if (prods) {
       /* res.send(prods); */
+      console.log(prods);
       res.render("product", prods )
     } else {
       res.send({ error: `No existe producto con id: ${pid}` });
@@ -86,11 +90,10 @@ productsRouter.post("/", uploader.single('thumbnails') ,async (req, res) => {
       price,
       status,
       stock,
-      category, 
-      quantity
+      category
     } = req.body;
 
-    let thumbnails = req.file.path
+    let thumbnails = req.file.path ? req.file.path : []
 
     const newProd = {
       title,
@@ -100,8 +103,7 @@ productsRouter.post("/", uploader.single('thumbnails') ,async (req, res) => {
       status,
       stock,
       thumbnails,
-      category,
-      quantity
+      category
     };
 
     console.log("Prueba: "+newProd+" Fin Prueba");
@@ -118,8 +120,7 @@ productsRouter.post("/", uploader.single('thumbnails') ,async (req, res) => {
       code,
       stock,
       category,
-      status,
-      quantity
+      status
   });
 
     console.log(newProd);

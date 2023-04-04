@@ -12,7 +12,7 @@ export default class ProductManagerF {
     this.#path = path
   }
 
-  async addProducts(title, description, price, thumbnails, quantity ,code, stock, category, status) {
+  async addProducts(title, description, price ,code, stock, category, status) {
     const prods = await this.getProducts();
 
     const newProd = {
@@ -20,12 +20,11 @@ export default class ProductManagerF {
       title,
       description,
       price,
-      thumbnails,
+      /* thumbnails */
       code,
       stock,
       category, 
       status,
-      quantity
     };
 
     const validar = await prods.some(

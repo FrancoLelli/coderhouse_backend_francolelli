@@ -7,13 +7,21 @@ import { Server } from "socket.io";
 import viewsRouter from "../routes/views_router.js"
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
+import helpers from "handlebars-helpers";
+import { allowInsecurePrototypeAccess } from "@handlebars/allow-prototype-access";
+import Handlebars from "handlebars";
+
 
 import prods from "../products.json" assert { type: "json" };
 
 const app = express();
 
 app.use(bodyParser.urlencoded({extended: true}))
-app.engine("handlebars", engine());
+app.engine('handlebars', engine({
+  handlebars: allowInsecurePrototypeAccess(Handlebars),
+  helpers: helpers,
+  defaultLayout: 'main'
+}));
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/views");
 

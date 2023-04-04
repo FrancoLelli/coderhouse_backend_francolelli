@@ -16,7 +16,7 @@ const prodsSchema = new mongoose.Schema({
     },
     status: {
         type: Boolean,
-        required: true
+        default: true
     },
     stock: {
         type: Number,
@@ -27,14 +27,10 @@ const prodsSchema = new mongoose.Schema({
         required: true
     },
     thumbnails: {
-        type: [String],
-        required: true
+        type: Array,
+        default: []
     },
     price: {
-        type: Number,
-        required: true
-    },
-    quantity: {
         type: Number,
         required: true
     }

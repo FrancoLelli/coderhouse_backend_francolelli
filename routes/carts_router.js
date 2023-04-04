@@ -16,7 +16,7 @@ cartsRouter.post("/", async (req, res) => {
   }
 });
 
-cartsRouter.post("/:cid/products/:pid", async (req, res, next) => {
+cartsRouter.post("/:cid/products/:pid", async (req, res) => {
   try {
     const { cid, pid } = req.params;
 
@@ -25,7 +25,6 @@ cartsRouter.post("/:cid/products/:pid", async (req, res, next) => {
     await newCarrito.addCarritoProd(cid, pid);
 
     res.send("Producto agregado correctamente");
-    next();
   } catch (error) {
     console.log(error);
   }
@@ -37,14 +36,34 @@ cartsRouter.get("/:cid", async (req, res) => {
 
     const newCarrito = await new CartManager("./carrito.json");
 
-    let prods = await newCarrito.getCarritoById(cid);
+    let carts = await newCarrito.getCarritoById(cid);
 
-    console.log(prods);
-    res.send(prods);
+    res.render("cart", carts )  
   } catch (error) {
     console.log(error);
   }
 });
+
+cartsRouter.put("/:cid", async (req, res) => {
+  try {
+    const { cid } = req.params;
+
+    const prodIds = req.body.prods_id
+
+    const newCarrito = await new CartManager("./carrito.json");
+
+    await newCarrito.deleteAllProd(cid)
+
+    prodIds.forEach( async (id) => {
+      await newCarrito.updateCarrito(cid, id)
+    })
+
+    res.send("Carrito actualizado correctamente")
+
+  } catch (error) {
+    console.log(error);
+  }
+})
 
 cartsRouter.put("/:cid/products/:pid", async (req, res) => {
   try {
