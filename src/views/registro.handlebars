@@ -1,11 +1,23 @@
 <div>
-    <h1>Bienvenido!</h1>
-    <a href="/login">Iniciar Sesion</a>
+    <h1>Bienvenido, Registrate!</h1>
+    <a href="/">Iniciar Sesion</a>
 </div>
-<form method="POST" action="/api/products/products">
+<form method="post" action="/api/sessions/users/signup">
     <div>
         <label for="email">Email:</label>
         <input type="email" placeholder="Ingresa su email" name="email">
+    </div>
+    <div>
+        <label for="first_name">Name:</label>
+        <input type="text" placeholder="Ingresa su nombre" name="first_name">
+    </div>
+    <div>
+        <label for="last_name">Lastname:</label>
+        <input type="text" placeholder="Ingresa su apellido" name="last_name">
+    </div>
+    <div>
+        <label for="age">Age:</label>
+        <input type="number" placeholder="Ingresa su edad" name="age">
     </div>
     <div>
         <label for="password">Password</label>

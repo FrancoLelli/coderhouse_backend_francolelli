@@ -1,8 +1,17 @@
 <div>
+    <h1>Bienvenido</h1>
+    <ul>
+        <li>Nombre: {{userDatos._doc.first_name}}</li>
+        <li>Apellido: {{userDatos._doc.last_name}}</li>
+        <li>Email: {{userDatos._doc.email}}</li>
+        <li>Edad: {{userDatos._doc.age}}</li>
+        <li>Rol: {{userDatos.rol}}</li>
+    </ul>
+</div>
+<div>
     <h1>Producto</h1>
-    <a href="/">Home</a>
     <a href="/perfil">Perfil</a>
-    <a href="/logout">Cerrar sesion</a>
+    <a href="/api/sessions/users/logout">Cerrar sesion</a>
 </div>
 <div>
     <h1>Products</h1>
