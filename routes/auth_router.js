@@ -54,7 +54,7 @@ authRouter.get(
   }
 );
 
-authRouter.post("/users/login", async (req, res) => {
+authRouter.post("/users/login" ,async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await userModel.findOne({ email: email });
@@ -89,5 +89,9 @@ authRouter.get("/users/logout", (req, res) => {
     res.redirect("/");
   });
 });
+
+authRouter.get("/current", (req,res) => {
+  res.json({user: req.user})
+})
 
 export default authRouter;
