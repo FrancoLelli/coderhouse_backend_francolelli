@@ -17,11 +17,12 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
 import { initializedPassport } from "./config/passport_config.js";
+import {options} from "./config/options.js";
 
 import prods from "../products.json" assert { type: "json" };
 
-const database =
-  "mongodb+srv://francolelli:prueba123@cluster0.hyaqfeo.mongodb.net/ecommerce?retryWrites=true&w=majority";
+const database = options.mongoDB.url;
+const port = options.server.port;
 
 const app = express();
 
@@ -34,7 +35,7 @@ app.use(
     store: MongoStore.create({
       mongoUrl: database,
     }),
-    secret: "claveSecreta",
+    secret: options.server.secretSession,
     resave: true,
     saveUninitialized: true,
   })
@@ -65,7 +66,7 @@ app.use("/api/carts", cartsRouter);
 app.use("/api/prueba", viewsRouter);
 app.use(express.json());
 
-const httpServer = app.listen(8080, () => {
+const httpServer = app.listen(port, () => {
   console.log("Server On");
 });
 
