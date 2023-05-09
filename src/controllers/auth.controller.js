@@ -28,7 +28,7 @@ export const userLoginController = async (req, res) => {
     if (user) {
       if (isValidPassword(user, password)) {
         req.session.user = user.email;
-        res.send("Login exitoso");
+        res.redirect("/products");
       } else {
         res.send("Credenciales incorrectas");
       }
