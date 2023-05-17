@@ -17,7 +17,9 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
 import { initializedPassport } from "./config/passport_config.js";
-import {options} from "./config/options.js";
+import { options } from "./config/options.js";
+import transporter from "./config/gmail.js";
+import { twilioClient, twilioPhone } from "./config/twilio.js";
 
 import prods from "../products.json" assert { type: "json" };
 
@@ -41,9 +43,9 @@ app.use(
   })
 );
 
-initializedPassport()
-app.use(passport.initialize())
-app.use(passport.session())
+initializedPassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.engine(
@@ -69,6 +71,41 @@ app.use(express.json());
 const httpServer = app.listen(port, () => {
   console.log("Server On");
 });
+
+const emailTemplate = `<div>
+        <h1>Bienvenido!!</h1>
+        <img src="https://fs-prod-cdn.nintendo-europe.com/media/images/10_share_images/portals_3/2x1_SuperMarioHub.jpg" style="width:250px"/>
+        <p>Ya puedes empezar a usar nuestros servicios</p>
+        <a href="https://www.google.com/">Explorar</a>
+</div>`;
+
+app.post("/register", async (req, res) => {
+  try {
+    await transporter.sendMail({
+      from: "E-Commerce Franco's Market",
+      to: "franlelli1966@gmail.com",
+      subject: "Register Succesfull",
+      html: emailTemplate
+    });
+    res.json({ status: 'success', message: 'Nice register' })
+  } catch (error) {
+    res.json({status: "error", message: "Error when try register an user"})
+  }
+})
+
+app.post("/twilio-coder", async (req, res) => {
+  try {
+    const message = await twilioClient.messages.create({
+      body: "Holi charly, te lo mando desde el codigo que estoy creando",
+      from: twilioPhone,
+      to: "+543465415803"
+    })
+    res.json({ status: 'success', message: 'Nice buy and send a message' })
+  } catch (error) {
+    console.log(error);
+    res.json({status: "error", message: "Error when try doing a buy"})
+  }
+})
 
 const socketServer = new Server(httpServer);
 
