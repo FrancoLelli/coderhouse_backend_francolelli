@@ -1,6 +1,7 @@
 import prodsModel from "../dao/models/products_models.js";
 import ProductManagerD from "../dao/db-manager/products_manager.js";
 import userModel from "../dao/models/users_models.js";
+import EEror from "../enums/EError";
 
 const productManager = new ProductManagerD(prodsModel);
 

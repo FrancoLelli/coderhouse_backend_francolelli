@@ -21,6 +21,7 @@ import { options } from "./config/options.js";
 import transporter from "./config/gmail.js";
 import { twilioClient, twilioPhone } from "./config/twilio.js";
 import { checkRole } from "./middlewares/auth.js";
+import compression from "express-compression";
 
 import prods from "../products.json" assert { type: "json" };
 
@@ -106,6 +107,19 @@ app.post("/twilio-coder", async (req, res) => {
   console.log(error);
   res.json({ status: "error", message: "Error when try doing a buy" });
  }
+});
+
+app.get("/mockingproducts", compression({brotli:{enabled:true, zlib:{}}}),async (req, res) => {
+ const prod = {
+  title: "Prod",
+  description: "Descripcion del prod",
+  code: "abc123",
+  status: true,
+  stock: 4,
+  category: "default",
+  price: 1200
+ };;
+ res.send(prod.repeat(100))
 });
 
 const socketServer = new Server(httpServer);
