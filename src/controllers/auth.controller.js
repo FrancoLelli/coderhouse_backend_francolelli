@@ -1,4 +1,6 @@
 import passport from "passport";
+import userModel from "../dao/models/users_models.js";
+import { isValidPassword } from "../utils.js";
 
 export const passportSignupController = passport.authenticate(
   "signupStrategy",
@@ -8,7 +10,7 @@ export const passportSignupController = passport.authenticate(
 );
 
 export const productsRedirectController = (req, res) => {
-  res.redirect("/products");
+  return res.redirect("/products");
 };
 
 export const passportFailureSignupController = (req, res) => {

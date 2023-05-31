@@ -21,7 +21,8 @@ import { options } from "./config/options.js";
 import transporter from "./config/gmail.js";
 import { twilioClient, twilioPhone } from "./config/twilio.js";
 import { checkRole } from "./middlewares/auth.js";
-import compression from "express-compression";
+import compression from 'express-compression'
+import { errorHandler } from "./middlewares/auth.js";
 
 import prods from "../products.json" assert { type: "json" };
 
@@ -69,6 +70,7 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/prueba", viewsRouter);
 app.use(express.json());
+/* app.use(errorHandler); */
 
 const httpServer = app.listen(port, () => {
  console.log("Server On");

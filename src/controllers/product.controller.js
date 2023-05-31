@@ -1,7 +1,9 @@
 import prodsModel from "../dao/models/products_models.js";
 import ProductManagerD from "../dao/db-manager/products_manager.js";
 import userModel from "../dao/models/users_models.js";
-import EEror from "../enums/EError";
+import { EError } from "../enums/EError.js";
+import { generateProductErrorInfo } from '../service/prodErrorInfo.service.js'
+import { CustomError } from '../service/customError.service.js'
 
 const productManager = new ProductManagerD(prodsModel);
 
@@ -100,6 +102,15 @@ export const createProductController = async (req, res) => {
       thumbnails,
       category,
     };
+
+    if(!title || !description || !code){
+      CustomError.createError({
+        name:"User create error",
+        cause:generateProductErrorInfo(req.body),
+        message:"Error creando el usuario",
+        errorCode:EError.INVALID_JSON
+    });
+    }
 
     await productManager.addProducts({
       title,
