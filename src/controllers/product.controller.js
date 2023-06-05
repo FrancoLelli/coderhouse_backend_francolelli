@@ -105,9 +105,9 @@ export const createProductController = async (req, res) => {
 
     if(!title || !description || !code){
       CustomError.createError({
-        name:"User create error",
+        name:"Product create error",
         cause:generateProductErrorInfo(req.body),
-        message:"Error creando el usuario",
+        message:"Error creando el producto",
         errorCode:EError.INVALID_JSON
     });
     }
