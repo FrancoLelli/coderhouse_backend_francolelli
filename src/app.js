@@ -21,8 +21,9 @@ import { options } from "./config/options.js";
 import transporter from "./config/gmail.js";
 import { twilioClient, twilioPhone } from "./config/twilio.js";
 import { checkRole } from "./middlewares/auth.js";
-import compression from 'express-compression'
+import compression from "express-compression";
 import { errorHandler } from "./middlewares/auth.js";
+import { addLogger } from "./utils/logger.js";
 
 import prods from "../products.json" assert { type: "json" };
 
@@ -32,18 +33,18 @@ const port = options.server.port;
 const app = express();
 
 mongoose.connect(database).then((conn) => {
- console.log("Connected to DB!");
+  console.log("Connected to DB!");
 });
 
 app.use(
- session({
-  store: MongoStore.create({
-   mongoUrl: database,
-  }),
-  secret: options.server.secretSession,
-  resave: true,
-  saveUninitialized: true,
- })
+  session({
+    store: MongoStore.create({
+      mongoUrl: database,
+    }),
+    secret: options.server.secretSession,
+    resave: true,
+    saveUninitialized: true,
+  })
 );
 
 initializedPassport();
@@ -52,12 +53,12 @@ app.use(passport.session());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.engine(
- "handlebars",
- engine({
-  handlebars: allowInsecurePrototypeAccess(Handlebars),
-  helpers: helpers,
-  defaultLayout: "main",
- })
+  "handlebars",
+  engine({
+    handlebars: allowInsecurePrototypeAccess(Handlebars),
+    helpers: helpers,
+    defaultLayout: "main",
+  })
 );
 app.set("view engine", "handlebars");
 app.set("views", path.join(__dirname + "/views"));
@@ -70,10 +71,11 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/prueba", viewsRouter);
 app.use(express.json());
-/* app.use(errorHandler); */
+app.use(errorHandler);
+app.use(addLogger);
 
 const httpServer = app.listen(port, () => {
- console.log("Server On");
+  console.log("Server On");
 });
 
 const emailTemplate = `<div>
@@ -84,54 +86,62 @@ const emailTemplate = `<div>
 </div>`;
 
 app.post("/register", async (req, res) => {
- try {
-  await transporter.sendMail({
-   from: "E-Commerce Franco's Market",
-   to: "franlelli1966@gmail.com",
-   subject: "Register Succesfull",
-   html: emailTemplate,
-  });
-  res.json({ status: "success", message: "Nice register" });
- } catch (error) {
-  res.json({ status: "error", message: "Error when try register an user" });
- }
+  try {
+    await transporter.sendMail({
+      from: "E-Commerce Franco's Market",
+      to: "franlelli1966@gmail.com",
+      subject: "Register Succesfull",
+      html: emailTemplate,
+    });
+    res.json({ status: "success", message: "Nice register" });
+  } catch (error) {
+    res.json({ status: "error", message: "Error when try register an user" });
+  }
 });
 
 app.post("/twilio-coder", async (req, res) => {
- try {
-  const message = await twilioClient.messages.create({
-   body: "Holi charly, te lo mando desde el codigo que estoy creando",
-   from: twilioPhone,
-   to: "+543465415803",
-  });
-  res.json({ status: "success", message: "Nice buy and send a message" });
- } catch (error) {
-  console.log(error);
-  res.json({ status: "error", message: "Error when try doing a buy" });
- }
+  try {
+    const message = await twilioClient.messages.create({
+      body: "Holi charly, te lo mando desde el codigo que estoy creando",
+      from: twilioPhone,
+      to: "+543465415803",
+    });
+    res.json({ status: "success", message: "Nice buy and send a message" });
+  } catch (error) {
+    console.log(error);
+    res.json({ status: "error", message: "Error when try doing a buy" });
+  }
 });
 
-app.get("/mockingproducts", compression({brotli:{enabled:true, zlib:{}}}),async (req, res) => {
- const prod = {
-  title: "Prod",
-  description: "Descripcion del prod",
-  code: "abc123",
-  status: true,
-  stock: 4,
-  category: "default",
-  price: 1200
- };;
- res.send(prod.repeat(100))
-});
+app.get(
+  "/mockingproducts",
+  compression({ brotli: { enabled: true, zlib: {} } }),
+  async (req, res) => {
+    const prod = {
+      title: "Prod",
+      description: "Descripcion del prod",
+      code: "abc123",
+      status: true,
+      stock: 4,
+      category: "default",
+      price: 1200,
+    };
+    res.send(prod.repeat(100));
+  }
+);
+
+app.get("/logger", (req, res) => {
+        res.send('Bienvenido')
+})
 
 const socketServer = new Server(httpServer);
 
 socketServer.on("connection", checkRole(["user"]), (socket) => {
- console.log("New Client");
+  console.log("New Client");
 
- socket.on("message", (data) => {
-  console.log(data);
- });
+  socket.on("message", (data) => {
+    console.log(data);
+  });
 
- socket.emit("productos_update", prods);
+  socket.emit("productos_update", prods);
 });
