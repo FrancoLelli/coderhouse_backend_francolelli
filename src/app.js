@@ -24,6 +24,7 @@ import { checkRole } from "./middlewares/auth.js";
 import compression from "express-compression";
 import { errorHandler } from "./middlewares/auth.js";
 import { addLogger } from "./utils/logger.js";
+import { mockProductController } from "./controllers/mockProduct.controller.js";
 
 import prods from "../products.json" assert { type: "json" };
 
@@ -113,26 +114,11 @@ app.post("/twilio-coder", async (req, res) => {
   }
 });
 
-app.get(
-  "/mockingproducts",
-  compression({ brotli: { enabled: true, zlib: {} } }),
-  async (req, res) => {
-    const prod = {
-      title: "Prod",
-      description: "Descripcion del prod",
-      code: "abc123",
-      status: true,
-      stock: 4,
-      category: "default",
-      price: 1200,
-    };
-    res.send(prod.repeat(100));
-  }
-);
+app.get("/mockingproducts", mockProductController);
 
 app.get("/logger", (req, res) => {
-        res.send('Bienvenido')
-})
+  res.send("Bienvenido");
+});
 
 const socketServer = new Server(httpServer);
 
