@@ -1,6 +1,6 @@
 export const generateProductErrorInfo = (prod)=>{
   return `
-      Alguno de los campos para crear el producto no es valido
+      Alguno de los campos para cargar el producto no es valido
       Lista de campos requeridos:
       title: debe ser un campo de tipo String, pero se recibio ${prod.title},
       description: debe ser un campo de tipo String, pero se recibio ${prod.description},

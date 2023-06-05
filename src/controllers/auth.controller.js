@@ -1,6 +1,9 @@
 import passport from "passport";
 import userModel from "../dao/models/users_models.js";
 import { isValidPassword } from "../utils.js";
+import { EError } from "../enums/EError.js";
+import { generateProductErrorInfo } from "../service/prodErrorInfo.service.js";
+import { CustomError } from "../service/customError.service.js";
 
 export const passportSignupController = passport.authenticate(
   "signupStrategy",
@@ -10,6 +13,12 @@ export const passportSignupController = passport.authenticate(
 );
 
 export const productsRedirectController = (req, res) => {
+  CustomError.createError({
+    name: "User create error",
+    cause: generateProductErrorInfo(req.body),
+    message: "Error creando el usuario",
+    errorCode: EError.INVALID_JSON,
+  });
   return res.redirect("/products");
 };
 
@@ -19,9 +28,12 @@ export const passportFailureSignupController = (req, res) => {
 
 export const passportGithubController = passport.authenticate("githubSignup");
 
-export const passportGithubCallbackController = passport.authenticate("githubSignup", {
-  failureRedirect: "/api/sessions/failure-signup",
-});
+export const passportGithubCallbackController = passport.authenticate(
+  "githubSignup",
+  {
+    failureRedirect: "/api/sessions/failure-signup",
+  }
+);
 
 export const userLoginController = async (req, res) => {
   try {
@@ -41,7 +53,7 @@ export const userLoginController = async (req, res) => {
   }
 };
 
-export const userLogoutController =  (req, res) => {
+export const userLogoutController = (req, res) => {
   req.session.destroy((error) => {
     if (error) return res.send("La sesion no se pudo cerrar");
     console.log("Session destroy");
