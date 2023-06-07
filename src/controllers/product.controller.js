@@ -4,6 +4,7 @@ import userModel from "../dao/models/users_models.js";
 import { EError } from "../enums/EError.js";
 import { generateProductErrorInfo } from '../service/prodErrorInfo.service.js'
 import { CustomError } from '../service/customError.service.js'
+import { addLogger, logger } from "../utils/logger.js";
 
 const productManager = new ProductManagerD(prodsModel);
 
@@ -56,7 +57,7 @@ export const getFilterProductController = async (req, res) => {
     );
 
     res.send(prods);
-    console.log(prods);
+    logger.info(prods)
 
     if (limit) {
       res.send(prods.slice(0, limit));
@@ -64,7 +65,7 @@ export const getFilterProductController = async (req, res) => {
       res.send(prods);
     }
   } catch (error) {
-    console.log(error);
+    logger.info(error)
   }
 };
 
