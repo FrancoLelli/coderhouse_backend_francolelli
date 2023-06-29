@@ -27,6 +27,8 @@ import { addLogger } from "./utils/logger.js";
 import { mockProductController } from "./controllers/mockProduct.controller.js";
 
 import prods from "../products.json" assert { type: "json" };
+import { swaggerSpecs } from "./config/docConfig.js";
+import swaggerUI from "swagger-ui-express";
 
 const database = options.mongoDB.url;
 const port = options.server.port;
@@ -74,6 +76,7 @@ app.use("/api/prueba", viewsRouter);
 app.use(express.json());
 app.use(errorHandler);
 app.use(addLogger);
+app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(swaggerSpecs));
 
 const httpServer = app.listen(port, () => {
   console.log("Server On");

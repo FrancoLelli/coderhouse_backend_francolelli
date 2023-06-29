@@ -1,0 +1,108 @@
+paths:
+  /api/products/:
+    get:
+      summary: Obtener productos
+      description: Obtiene una lista de productos paginada
+      parameters:
+        - name: limit
+          in: query
+          description: Límite de resultados por página
+          type: integer
+        - name: page
+          in: query
+          description: Número de página
+          type: integer
+        - name: sort
+          in: query
+          description: Orden de clasificación de productos
+          type: string
+        - name: category
+          in: query
+          description: Categoría de productos a filtrar
+          type: string
+        - name: query
+          in: query
+          description: Consulta para buscar productos
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Product"
+
+  /api/products/{pid}:
+    get:
+      summary: Obtener un producto
+      description: Obtiene un producto por su ID
+      parameters:
+        - name: pid
+          in: path
+          description: ID del producto a obtener
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Product"
+        404:
+          description: No encontrado
+
+    put:
+      summary: Actualizar un producto
+      description: Actualiza un producto existente
+      parameters:
+        - name: pid
+          in: path
+          description: ID del producto a actualizar
+          type: string
+        - name: body
+          in: body
+          description: Datos del producto a actualizar
+          schema:
+            $ref: "#/definitions/Product"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Product"
+        404:
+          description: No encontrado
+
+    delete:
+      summary: Eliminar un producto
+      description: Elimina un producto existente
+      parameters:
+        - name: pid
+          in: path
+          description: ID del producto a eliminar
+          type: string
+      responses:
+        200:
+          description: OK
+        404:
+          description: No encontrado
+
+definitions:
+  Product:
+    type: object
+    properties:
+      title:
+        type: string
+      description:
+        type: string
+      code:
+        type: string
+      price:
+        type: number
+      status:
+        type: string
+      stock:
+        type: integer
+      thumbnails:
+        type: array
+        items:
+          type: string
+      category:
+        type: string

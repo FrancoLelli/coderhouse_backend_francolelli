@@ -1,0 +1,121 @@
+paths:
+  /api/cart:
+    post:
+      summary: Crear un carrito
+      description: Crea un nuevo carrito vacío
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Cart"
+        500:
+          description: Error en el servidor
+
+  /api/cart/{cartId}:
+    put:
+      summary: Agregar un producto al carrito
+      description: Agrega un producto al carrito especificado
+      parameters:
+        - name: cartId
+          in: path
+          description: ID del carrito
+          type: string
+        - name: body
+          in: body
+          description: Datos del producto a agregar al carrito
+          schema:
+            $ref: "#/definitions/ProductInCart"
+      responses:
+        200:
+          description: OK
+          schema:
+            type: string
+        404:
+          description: No encontrado
+        500:
+          description: Error en el servidor
+
+    delete:
+      summary: Eliminar todos los productos del carrito
+      description: Elimina todos los productos del carrito especificado
+      parameters:
+        - name: cartId
+          in: path
+          description: ID del carrito
+          type: string
+      responses:
+        200:
+          description: OK
+        500:
+          description: Error en el servidor
+
+  /api/cart/{cartId}/product/{productId}:
+    delete:
+      summary: Eliminar un producto del carrito
+      description: Elimina un producto del carrito especificado
+      parameters:
+        - name: cartId
+          in: path
+          description: ID del carrito
+          type: string
+        - name: productId
+          in: path
+          description: ID del producto a eliminar
+          type: string
+      responses:
+        200:
+          description: OK
+        500:
+          description: Error en el servidor
+
+  /api/cart/{cid}/purchase:
+    post:
+      summary: Realizar una compra
+      description: Realiza una compra utilizando el carrito especificado
+      parameters:
+        - name: cid
+          in: path
+          description: ID del carrito
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: "#/definitions/Ticket"
+        400:
+          description: Error de solicitud
+        404:
+          description: No encontrado
+        500:
+          description: Error en el servidor
+
+definitions:
+  Cart:
+    type: object
+    properties:
+      id:
+        type: string
+      products:
+        type: array
+        items:
+          $ref: "#/definitions/ProductInCart"
+
+  ProductInCart:
+    type: object
+    properties:
+      id:
+        type: string
+      quantity:
+        type: integer
+
+  Ticket:
+    type: object
+    properties:
+      code:
+        type: string
+      purchase_datetime:
+        type: string
+      amount:
+        type: number
+      purchaser:
+        type: string
